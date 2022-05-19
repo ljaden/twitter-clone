@@ -1,0 +1,23 @@
+<%- include('layouts/login-layout'); -%>
+
+  <div class="wrapper">
+  <div class="loginContainer">
+    <form action="" method="post">
+      <fieldset>
+        <legend><h1>Register</h1></legend>
+        <input type="text" name="fullname" placeholder="Full Name" required>
+        <input type="text" name="email" placeholder="Email" required>
+        <input type="text" name="login-username" placeholder="Username" required>
+        <input type="password" name="login-password" placeholder="Password" required>
+        <input type="password" name="confirm-login-password" placeholder="Confirm Password" required>
+        <input class='btn btn-primary' type="submit" value="Register">
+        <a href="/login">Already have an account? Login here.</a>
+        
+        
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+
+<%- include('layouts/footer'); -%>

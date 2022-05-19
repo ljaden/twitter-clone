@@ -1,0 +1,23 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  /* margin-top: 10%; */
+}
+
+.loginContainer {
+  padding: 30px;
+  width: 80%;
+  max-width: 600px;
+  text-align: center;
+}
+
+fieldset {
+  display: flex;
+  flex-direction: column;
+}
+
+fieldset>input {
+  margin-bottom: 10px;
+  border-radius: 2px;
+  border: 1px solid #dedede;
+}
