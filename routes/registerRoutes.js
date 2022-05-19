@@ -13,33 +13,40 @@ router.get('/',(req,res,next) => {
   res.render('register')
 })
 
-router.post('/', (req,res,next) => {
+router.post('/', async (req,res,next) => {
 
   const fullname = req.body.fullname
   const email = req.body.email
   const username = req.body.username
   const password = req.body.password
 
-  // console.log(fullname,email,username,password)
   // if register form is filled
   if(fullname && email && username && password){
-    User.findOne({  //query db for identical username||emails
-      $or: [
-        {username: username},
-        {email: email}
-        ]
-    }).then((result) => {
-      if(result !== null){  // if username||email already exist, redirect back to register page
-        res.redirect('/register')
-      }else { // else register User data into db
-        User.create({
-          fullname: fullname,
-          email: email,
-          username: username,
-          password: password
-        },()=> res.send('Registered your account!'))
-      }
+    
+    const user = await User.findOne({  //query db for identical username||emails
+      $or: [{username: username},{email: email}]
     })
+    // console.log(user)
+    
+    if(user === null){  // if username||email doesn't exist, register to database
+      User.create({
+        fullname: fullname,
+        email: email,
+        username: username,
+        password: password
+      },
+      () => res.send('Registered your account!'))
+    }else { // else register User data into db
+      if(email === user.email){ //email already in use
+        console.log('Email is already in use!')
+
+      }else if(username === user.username) {
+        // username already in use
+        console.log('Username already in use!')
+      }
+      // redirect back to /register
+      res.redirect('/register')
+    }
   }
 })
 
