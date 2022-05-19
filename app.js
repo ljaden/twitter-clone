@@ -1,9 +1,13 @@
-
+// secrect key
+require('dotenv').config()
 // middleware function
 const mw = require('./middleware')
+
 // express
 const express = require('express');
 const app = express();
+// for parsing application/x-www-form-urlencoded
+app.use(express.urlencoded({extended: false})) 
 // template engine - ejs
 app.set('view engine', 'ejs')
 // serve static files
@@ -15,7 +19,9 @@ const registerRoute = require('./routes/registerRoutes')
 app.use('/login',loginRoute)
 app.use('/register',registerRoute)
 
-
+// database
+// import database class
+const mongoose = require('./database')
 
 
 
