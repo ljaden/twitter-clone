@@ -1,53 +1,77 @@
-const express = require('express')
-const app = express()
-const router = express.Router()
+const express = require("express");
+const app = express();
+const router = express.Router();
+
+//bcrypt saltRound and hash
+const bcrypt = require("bcrypt");
+const saltRound = 10;
 
 //database - UserSchema
-const User = require('../schemas/User_Schema')
+const User = require("../schemas/User_Schema");
 
-app.set('view engine', 'ejs')
-app.use(express.urlencoded({extended: false})) // for parsing application/x-www-form-urlencoded
+app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: false })); // for parsing application/x-www-form-urlencoded
 
 // configure router to respond with rendering register page
-router.get('/',(req,res,next) => {
-  res.render('register')
-})
 
-router.post('/', async (req,res,next) => {
+let payload = {
+  title: "Register",
+};
 
-  const fullname = req.body.fullname
-  const email = req.body.email
-  const username = req.body.username
-  const password = req.body.password
+router.get("/", (req, res, next) => {
+  // console.log(req.session)
+  res.render("register", { payload: payload });
+});
+
+router.post("/", async (req, res, next) => {
+  let payload = req.body;
+
+  const fullname = req.body.fullname;
+  const email = req.body.email;
+  const username = req.body.username;
 
   // if register form is filled
-  if(fullname && email && username && password){
-    
-    const user = await User.findOne({  //query db for identical username||emails
-      $or: [{username: username},{email: email}]
-    })
+  if (fullname && email && username) {
+    const user = await User.findOne({
+      //query db for identical username||emails
+      $or: [{ username: username }, { email: email }],
+    });
     // console.log(user)
-    
-    if(user === null){  // if username||email doesn't exist, register to database
+
+    if (user === null) {
+      // if username||email doesn't exist, register to database
+      // hashing pw
+      const password = await bcrypt.hash(req.body.password, saltRound);
+
       User.create({
         fullname: fullname,
         email: email,
         username: username,
-        password: password
-      },
-      () => res.send('Registered your account!'))
-    }else { // else register User data into db
-      if(email === user.email){ //email already in use
-        console.log('Email is already in use!')
-
-      }else if(username === user.username) {
+        password: password,
+      }).then((userinfo) => {
+        // use userinfo as cookie session
+        req.session.user = userinfo;
+        return res.redirect("/");
+      });
+    } else {
+      // User already exist
+      if (email === user.email && username === user.username) {
+        //both already in use
+        payload.errorMessage = "Username & Email is already in use!";
+      } else if (username === user.username) {
         // username already in use
-        console.log('Username already in use!')
+        payload.errorMessage = "Username already in use!";
+      } else {
+        // email already in use
+        payload.errorMessage = "Email already in use!";
       }
+
       // redirect back to /register
-      res.redirect('/register')
+      res.render("register", { payload: payload });
     }
+  } else {
+    res.render("register", { payload: payload });
   }
-})
+});
 
 module.exports = router;
