@@ -5,12 +5,14 @@
     <form action="" method="post" id="register", onsubmit="event.preventDefault(); validatePass();">
       <fieldset>
         <legend><h1>REGISTER</h1></legend>
+        <p class="errorMessage text-danger"><%=payload.errorMessage%></p>
         
-        <input type="text" name="fullname" placeholder="Full Name" required>
+        <input type="text" name="fullname" placeholder="Full Name" 
+        value= "<%= payload.fullname %>" required>
         
-        <input type="text" name="email" placeholder="Email" required>
+        <input type="text" name="email" placeholder="Email" value= "<%= payload.email %>" required>
         
-        <input type="text" name="username" placeholder="Username" required>
+        <input type="text" name="username" placeholder="Username" value= "<%= payload.username %>" required>
         
         <input type="password" name="password" placeholder="Password" id='password' required>
         

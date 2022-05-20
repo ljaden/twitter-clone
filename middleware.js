@@ -4,6 +4,7 @@ exports.checkLoginSession = (req,res, next) => {
   if (req.session && req.session.user) { // (t) proceed
     return next(); 
   } else {  // (f) redirect user to login page
+    // console.log(req.session)
     return res.redirect('/login')
   }
 }

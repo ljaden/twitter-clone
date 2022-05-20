@@ -10,7 +10,7 @@ class Database{
 
   connect() {
     // connecting to DB
-    mongoose.connect(`mongodb+srv://projecttwitter:${process.env.SECRET_KEY}@twitterclone.vhidm.mongodb.net/?retryWrites=true&w=majority/twitterClone`)
+    mongoose.connect(`mongodb+srv://projecttwitter:${process.env.SECRET_KEY}@twitterclone.vhidm.mongodb.net/TwitterCloneDB`)
     .then( () => {  // if connectiong successful print 'Connected to database'
       console.log('Connected to database')
     })

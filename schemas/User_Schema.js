@@ -24,7 +24,7 @@ const UserSchema = new Schema({
     require: true,
   },
   profilePic: {type: String, default: '/images/profilePic.png'}
-})
+},{timestamps: true})
 
 // Model constructor
 const User = mongoose.model('User', UserSchema)
