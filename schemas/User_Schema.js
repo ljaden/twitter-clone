@@ -23,7 +23,7 @@ const UserSchema = new Schema({
     type: String,
     require: true,
   },
-  profilePic: {type: String, default: '/images/profilePic.png'}
+  profilePic: {type: String, default: '../imgs/default.png'}
 },{timestamps: true})
 
 // Model constructor

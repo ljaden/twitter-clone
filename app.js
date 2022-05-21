@@ -35,8 +35,9 @@ app.get('/',mw.checkLoginSession,(req,res,next) => {
   // object data - sent to template engine
   const payload = {
     title: 'Twitter Clone',
-    heading: 'This is a Twitter Clone'
+    loggedInUser: req.session.user
   }
+  // console.log(req.session.user)
   res.render('index', {payload:payload})
 })
 

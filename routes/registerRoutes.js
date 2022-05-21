@@ -14,13 +14,17 @@ app.use(express.urlencoded({ extended: false })); // for parsing application/x-w
 
 // configure router to respond with rendering register page
 
-let payload = {
-  title: "Register",
-};
-
 router.get("/", (req, res, next) => {
-  // console.log(req.session)
-  res.render("register", { payload: payload });
+  let payload = {
+    title: "Register",
+  };
+  // check for existing session
+  if(req.session && req.session.user){
+    res.redirect('/') // redirect to home
+  } else {
+    // go to register
+    res.render("register", { payload: payload });
+  }
 });
 
 router.post("/", async (req, res, next) => {

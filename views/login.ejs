@@ -5,9 +5,10 @@
     <form action="" method="post" id="login">
       <fieldset>
         <legend><h1>LOGIN</h1></legend>
+        <p class="errorMessage text-danger"><%=payload.errorMessage%></p>
 
-          <input type="text" name="login-username" placeholder=" Username" required>
-          <input type="password" name="login-password" placeholder=" Password" required>
+          <input type="text" name="loginUsername" placeholder=" Username" value="<%=payload.loginUsername%>" required>
+          <input type="password" name="loginPassword" placeholder=" Password" required>
           <input class='btn btn-primary' type="submit" value="Login">
           <div>
             <a href="/register">Need an account? Sign up here.</a>
