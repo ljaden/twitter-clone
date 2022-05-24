@@ -22,11 +22,21 @@ app.use(sessions({
   saveUninitialized:false
 }))
 
+
 // Routes
 const loginRoute = require('./routes/loginRoutes')
 const registerRoute = require('./routes/registerRoutes')
+const logoutRoute = require('./routes/logoutRoutes')
+
 app.use('/login',loginRoute)
 app.use('/register',registerRoute)
+app.use('/logout',logoutRoute)
+
+// api Routes
+const postApiRoute = require('./routes/api/posts')
+
+app.use('/api/posts',postApiRoute)
+
 // database
 // import database class
 const mongoose = require('./database')
@@ -34,7 +44,7 @@ const mongoose = require('./database')
 app.get('/',mw.checkLoginSession,(req,res,next) => {
   // object data - sent to template engine
   const payload = {
-    title: 'Twitter Clone',
+    pageTitle: 'Home',
     loggedInUser: req.session.user
   }
   // console.log(req.session.user)

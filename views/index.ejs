@@ -1,14 +1,22 @@
 <%- include('layouts/header'); -%>
 
+<div class="wrapper">
+  <div class="row">
 
+    <%- include('components/navbar'); -%>
 
-<img src="<%= payload.loggedInUser.profilePic %>" alt="profile-picture">
-<h3>Welcome to Twitter, <%=payload.loggedInUser.username%>.</h3>
+    <main class="col-10 col-md-8 mainSectionContainer">
+      <div class="page-title">
+        <h1><%= payload.pageTitle%></h1>
+      </div>
+    <%- include('components/tweetform'); -%>
+    
+    </main>
 
+    <%- include('components/sidebar'); -%>
 
-
-
-
+  </div>
+</div>
 
 <%- include('layouts/footer'); -%>
 

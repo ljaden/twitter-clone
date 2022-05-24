@@ -40,14 +40,12 @@ router.post("/", async (req, res, next) => {
     // compare password
     boolPassword = await bcrypt.compare(password, existingUser.password);
 
-    if (boolPassword) {
-      // correct password
+    if (boolPassword === true) { // correct password
       // store session
       req.session.user = existingUser;
 
       res.redirect("/");
-    } else {
-      // incorrect password
+    } else { // incorrect password
       payload.errorMessage = "Incorrect password. Please try again.";
       // console.log(payload)
       res.render("login", { payload: payload });
@@ -58,7 +56,6 @@ router.post("/", async (req, res, next) => {
 
     res.render("login", { payload: payload });
   }
-
-  // res.render('login')
 });
+
 module.exports = router;

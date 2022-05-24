@@ -1,0 +1,98 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* CSS VARIABLES */
+:root {
+  --main-color: #1FA2F1;
+  --btnHover: #d4edff;
+  --border-color: #e6ecf0;
+}
+
+/* NAVBAR */
+nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  height: 100%;
+}
+nav a {
+  padding: 10px;
+  font-size: 30px;
+  width: 55px;
+  height: 55px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-decoration: none;
+  color: inherit;
+}
+nav a:hover{
+  background-color: var(--btnHover);
+  border-radius: 100%;
+}
+.logo {
+  color: var(--main-color);
+}
+
+/* CONTENT SECTION */
+.mainSectionContainer {
+  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+
+  display: flex;
+  flex-direction: column;
+}
+h1 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+.page-title {
+  padding:0 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+.page-title h1{
+  flex: 1;
+}
+
+.tweetFormContainer {
+  display: flex;
+  padding: 15px;
+  border-bottom: 10px solid #e6eaf0;
+  flex-shrink: 0;
+}
+.userProfilePic {
+  width: 50px;
+  height: 50px;
+}
+.userProfilePic img {
+  width: 100%;
+  background-color: #fff;
+}
+.textareaContainer {
+  flex: 1;
+  padding-left: 15px;
+}
+#postTweetArea {
+  width: 100%; 
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  resize: none;
+  font-size: 20px;
+  padding: 5px;
+}
+#submitTweetBtn {
+  background-color: var(--main-color);
+  color: #fff;
+  border: none;
+  border-radius: 40px;
+  padding: 7px 15px;
+}
+#submitTweetBtn:disabled {
+  background-color: #9bd1f9;
+}
