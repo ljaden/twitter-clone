@@ -11,22 +11,31 @@ textarea.addEventListener('keyup',() => {
 })
 
 
+// application/x-www-form-urlencoded
+const twt = document.getElementById('tweetForm')
+twt.addEventListener('submit',(e)=>{
+  e.preventDefault()
 
-const postTweet = (data) => {
-  axios.post('/api/posts',data)
-  .then(response =>{
-    console.log('POST: ',response.data)
-  })
+  const details = {
+    content: document.getElementById('postTweetArea').value
+  };
+
+let formBody = [];
+for (let property in details) {
+  const encodedKey = encodeURIComponent(property);
+  const encodedValue = encodeURIComponent(details[property]);
+  formBody.push(encodedKey + "=" + encodedValue);
 }
+// console.log(formBody) // => ['content=<tweet>']
+formBody = formBody.join("&"); // => 'content=<tweet>'
 
-const tweetForm = document.getElementById('tweetForm')
-tweetForm.addEventListener('submit',event => {
-  event.preventDefault();
-
-  const data = {
-    content: postTweetArea.value.trim()
-  }
-
-  console.log(data)
-  postTweet(data);
+// send tweet to server -- /api/posts 
+fetch('/api/posts', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+  },
+  body: formBody
+})
+.then(response => console.log(response.json())) // prints the response object
 })
