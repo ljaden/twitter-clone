@@ -53,5 +53,5 @@ app.get('/',mw.checkLoginSession,(req,res,next) => {
 
 const port = 3000
 app.listen((process.env.PORT || port),()=>{
-  console.log(`Server listening: http://localhost:${port}/`)
+  console.log(`Server listening on PORT:${process.env.PORT || port}`)
 })
