@@ -32,6 +32,7 @@ twt.addEventListener('submit',async (e)=>{
     }
     return formBody.join('&')
   }
+
   // send POST request to /api/posts -- stores tweet in db -- 
   const rawResponse = await fetch('/api/posts', {
     method: 'POST',
@@ -40,11 +41,12 @@ twt.addEventListener('submit',async (e)=>{
     },
     body: encodedTweetData(details)
   })
+
   // returned json object from POST
   const tweetContent = await rawResponse.json()
+  // const html = createTweetHtml(tweetContent)
+  const html = createHtml(tweetContent)
 
-  const html = createTweetHtml(tweetContent)
- 
   const tweetsContainer = document.getElementById('tweetContainer')
   tweetsContainer.prepend(html)
 
@@ -52,37 +54,56 @@ twt.addEventListener('submit',async (e)=>{
   document.getElementById('postTweetArea').value = ''
   // disable tweet button
   document.getElementById('submitTweetBtn').disabled = true 
-  
 })
 
-function createTweetHtml(data) {
-  // create container element with id 'post'
-  let divPost = document.createElement('div')
-  divPost.id = 'post'
+function createHtml(data) {
+  // // Variables For Future Use
+  // const tweet = data.content
+  // const name = data.postedBy.fullname
+  // const email = data.postedBy.email
+  // const profilePic = data.postedBy.profilePic
+  // const timestamp = 'create later'
 
-  // create container element with class 'mainContentContainer'
-  
-  let divMainContentContainer = document.createElement('div')
-  divMainContentContainer.className = 'mainContentContainer'
-  // create container with class 'userProfilePic'
-  
-  let divUserProfilePic = document.createElement('div')
-  divUserProfilePic.className = 'userProfilePic'
 
-  // ceate img element and set src attribute to user's profile picture
-  let profilePic = document.createElement('img')
-  profilePic.setAttribute(`src`,data.postedBy.profilePic)
-  
-  // 
-  divUserProfilePic.appendChild(profilePic)
-  divMainContentContainer.appendChild(divUserProfilePic)
-  
-  // create paragraph element for tweet
-  let para = document.createElement('p')
-  // let tweet = document.createTextNode(data.content)
-  para.textContent = data.content
-  divMainContentContainer.appendChild(para)
+  // create a div element
+  const template = document.createElement('div')
+  template.className = 'post'
+  // tweet component
+  let component =
+  `<div class="mainContentContainer">
+    <div class="userProfilePic">
+      <img src="${data.postedBy.profilePic}" alt="profile picture">
+    </div>
+    <div class="tweetContentContainer">
+      <div class="tweetHeader">
+        <a href="${data.postedBy.username}" class="displayName">${data.postedBy.fullname}</a> 
+        <span class="username">@${data.postedBy.username}<span>
+        <span class="date">timestamp - *hours ago*<span>
+      </div>
+      <div class="tweetBody">
+        <span>${data.content}</span>
+      </div>
+      <div class='tweetFooter'>
+        <div class='tweetBtnContainer'>
+          <button>
+            <i class="fa-regular fa-comment fa-lg"></i>
+          </button>
+        </div>
+        <div class='tweetBtnContainer'>
+          <button>
+            <i class="fa-solid fa-retweet fa-lg"></i>
+          </button>
+        </div>
+        <div class='tweetBtnContainer'>
+          <button>
+            <i class="fa-regular fa-heart fa-lg"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>`
 
-  return divMainContentContainer
+  template.innerHTML = component.trim()
+
+  return template;
 }
-  // createPost(response.json())
