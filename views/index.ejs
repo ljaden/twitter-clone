@@ -9,10 +9,11 @@
       <div class="page-title">
         <h1><%= payload.pageTitle%></h1>
       </div>
+
       <%- include('components/tweetform'); -%>
     
-      <div id="tweetContainer"></div>
-      
+      <div id="tweetContainer">
+      </div>
     </main>
 
     <%- include('components/sidebar'); -%>
@@ -22,3 +23,43 @@
 
 <%- include('layouts/footer'); -%>
 
+
+
+<!-- <div class="mainContentContainer">
+
+  <div class="userProfilePic">
+    <img src="${data.postedBy.profilePic}" alt="profile picture">
+  </div>
+
+  <div class="tweetContentContainer">
+    <div class="tweetHeader">
+      <a href="${data.postedBy.username}" class="displayName">${data.postedBy.fullname}</a> 
+      <span class="username">@${data.postedBy.username}<span>
+      <span class="date">timestamp - *hours ago*<span>
+    </div>
+
+    <div class="tweetBody">
+      <span>${data.content}</span>
+    </div>
+
+    <div class='tweetFooter'>
+      <div class='tweetBtnContainer'>
+        <button>
+          <i class="fa-regular fa-comment fa-lg"></i>
+        </button>
+      </div>
+
+      <div class='tweetBtnContainer'>
+        <button>
+          <i class="fa-solid fa-retweet fa-lg"></i>
+        </button>
+      </div>
+
+      <div class='tweetBtnContainer'>
+        <button>
+          <i class="fa-regular fa-heart fa-lg"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div> -->

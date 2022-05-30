@@ -1,7 +1,16 @@
+/* GLOBALS */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+a {
+  text-decoration: none;
+}
+button {
+  background: transparent;
+  border: none;
+  color:rgba(0,0,0,0.34)
 }
 
 /* CSS VARIABLES */
@@ -39,7 +48,7 @@ nav a:hover{
   color: var(--main-color);
 }
 
-/* CONTENT SECTION */
+/* USER INPUT SECTION */
 .mainSectionContainer {
   border-left: 1px solid var(--border-color);
   border-right: 1px solid var(--border-color);
@@ -86,13 +95,75 @@ h1 {
   font-size: 20px;
   padding: 5px;
 }
+.btnContainer{
+  display: flex;
+  flex-direction: row-reverse;
+  margin-top: 5px;
+}
 #submitTweetBtn {
   background-color: var(--main-color);
   color: #fff;
   border: none;
   border-radius: 40px;
   padding: 7px 15px;
+  font-size: 16px;
+  font-weight: bold;
 }
 #submitTweetBtn:disabled {
   background-color: #9bd1f9;
+}
+
+/* CONTENT SECTION */
+.post {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-color);
+}
+.mainContentContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+.tweetContentContainer {
+  padding-left: 15px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.displayName {
+  font-weight: bold;
+  color: black;
+  font-size: 1em;
+}
+.username,
+.date {
+  color: rgb(101,119,134);
+}
+.tweetBody {
+  margin: 5px 0;
+}
+.tweetFooter {
+  display: flex;
+  align-items: center;
+}
+.tweetFooter .tweetBtnContainer{
+  flex: 1;
+  display: flex;
+}
+.tweetFooter .tweetBtnContainer button {
+  padding: 0;
+}
+.tweetHeader a,
+.tweetHeader span {
+  padding-right: 5px;
+}
+.tweetBtnContainer{
+  padding:5px;
+}
+.tweetBtnContainer button:hover {
+  background-color: #d4edff;
+  color: var(--main-color);
+  border-radius: 50%;
 }
