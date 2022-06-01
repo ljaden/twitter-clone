@@ -8,10 +8,20 @@ const Tweet = require('../../schemas/Tweet_Schema')
 
 // for parsing application/x-www-form-urlencoded
 app.use(express.urlencoded({extended:false}))
+// for parsing json
+app.use(express.json())
 
 // GET
 router.get('/', (req,res) => {
-
+  Tweet.find()
+  .populate("postedBy") // appends users info to the results
+  .then(results => {
+    res.status(200).send(results)
+  })
+  .catch(error => {
+    console.log(error)
+    res.sendStatus(400)
+  })
 })
 
 // POST
@@ -44,4 +54,30 @@ router.post('/',async(req,res) => {
   }
 })
 
+// PUT
+router.put('/:id/like', async(req,res) => {
+  // data-id of post
+  const postId = req.params.id
+  // users id
+  const userId = req.session.user['_id']
+  // boolean if user already liked the post
+  const isLiked = req.session.user.likes && req.session.user.likes.includes(postId)
+  // ternary operator
+  let options = isLiked ? "$pull": "$addToSet"
+  // add||remove postId to Users' likes
+  req.session.user = await User.findByIdAndUpdate(userId,{[options]: {likes: postId}},{new: true})
+  .catch(error =>{
+    console.log(error)
+    res.send(400)
+  })
+
+  // add||remove userId from Posts' likes
+  const post = await Tweet.findByIdAndUpdate(postId,{[options]: {likes: userId}},{new: true})
+  .catch(error =>{
+    console.log(error)
+    res.send(400)
+  })
+  
+  res.status(200).send(post)
+})
 module.exports = router;

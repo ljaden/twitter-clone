@@ -6,8 +6,8 @@ const Schema = mongoose.Schema
 const TweetSchema = new Schema({
   content: {type: String, trim:true},
   postedBy: {type: Schema.Types.ObjectId, ref: 'User', required:true},
+  likes: [{type: Schema.Types.ObjectId, ref: 'User'}],
   pinned: Boolean
-
 }, {timestamps: true})
 
 

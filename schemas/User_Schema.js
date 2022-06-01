@@ -23,7 +23,8 @@ const UserSchema = new Schema({
     type: String,
     require: true,
   },
-  profilePic: {type: String, default: '../imgs/default.png'}
+  profilePic: {type: String, default: '../imgs/default.png'},
+  likes: [{type: Schema.Types.ObjectId, ref: 'Post'}],
 },{timestamps: true})
 
 // Model constructor

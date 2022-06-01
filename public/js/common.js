@@ -1,8 +1,8 @@
-// enable/disable tweet button
 const textarea = document.getElementById('postTweetArea')
-const btnTweet = document.getElementById('submitTweetBtn')
-
+// enable/disable tweet button
 textarea.addEventListener('keyup',() => {
+  const btnTweet = document.getElementById('submitTweetBtn')
+  
   if(textarea.value.trim().length > 0){
     btnTweet.disabled = false
   } else {
@@ -10,9 +10,8 @@ textarea.addEventListener('keyup',() => {
   }
 })
 
-
-// application/x-www-form-urlencoded
 const twt = document.getElementById('tweetForm')
+// submit/Tweet post
 twt.addEventListener('submit',async (e)=>{
   e.preventDefault()
 
@@ -56,32 +55,55 @@ twt.addEventListener('submit',async (e)=>{
   document.getElementById('submitTweetBtn').disabled = true 
 })
 
-function createHtml(data) {
-  // // Variables For Future Use
-  // const tweet = data.content
-  // const name = data.postedBy.fullname
-  // const email = data.postedBy.email
-  // const profilePic = data.postedBy.profilePic
-  // const timestamp = 'create later'
+// like tweet
+const tweetContainer = document.getElementById("tweetContainer")
+tweetContainer.addEventListener('click', async(e) => {
+  if (e.target.classList.contains('fa-heart') || e.target.className === 'likeBtn'){
+    const postId = getPostId(e.target)
+    
+    if(postId === undefined) return;
 
+    const dataObj = {
+      id:postId
+    }
+    const liked = await fetch(`/api/posts/${postId}/like`,{
+      method: 'PUT',
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify(dataObj)
+    })
+  }
+})
+
+// function to create dynamic content
+function createHtml(data) {
+  const id = data._id
+  const tweet = data.content
+  const name = data.postedBy.fullname
+  const username = data.postedBy.username
+  const profilePic = data.postedBy.profilePic
+  const timeAgo = timeDifference(new Date(), new Date(data.createdAt))
 
   // create a div element
   const template = document.createElement('div')
   template.className = 'post'
+  template.dataset.id = id
   // tweet component
   let component =
   `<div class="mainContentContainer">
     <div class="userProfilePic">
-      <img src="${data.postedBy.profilePic}" alt="profile picture">
+      <img src="${profilePic}" alt="profile picture">
     </div>
+
     <div class="tweetContentContainer">
+
       <div class="tweetHeader">
-        <a href="${data.postedBy.username}" class="displayName">${data.postedBy.fullname}</a> 
-        <span class="username">@${data.postedBy.username}<span>
-        <span class="date">timestamp - *hours ago*<span>
+        <a href="${username}" class="displayName">${name}</a><span class="username">@${username}</span><span class="date">~${timeAgo}</span>
       </div>
+
       <div class="tweetBody">
-        <span>${data.content}</span>
+        <span>${tweet}</span>
       </div>
       <div class='tweetFooter'>
         <div class='tweetBtnContainer'>
@@ -95,7 +117,7 @@ function createHtml(data) {
           </button>
         </div>
         <div class='tweetBtnContainer'>
-          <button>
+          <button class="likeBtn">
             <i class="fa-regular fa-heart fa-lg"></i>
           </button>
         </div>
@@ -107,3 +129,51 @@ function createHtml(data) {
 
   return template;
 }
+// returns relative time ago e.g "1min ago" "1hour ago"
+function timeDifference(current, previous) {
+
+  var msPerMinute = 60 * 1000;
+  var msPerHour = msPerMinute * 60;
+  var msPerDay = msPerHour * 24;
+  var msPerMonth = msPerDay * 30;
+  var msPerYear = msPerDay * 365;
+
+  var elapsed = current - previous;
+
+  if (elapsed < msPerMinute) {
+    if(elapsed/1000 < 30){
+      return "Just now"
+    }
+       return Math.round(elapsed/1000) + ' seconds ago';   
+  }
+
+  else if (elapsed < msPerHour) {
+       return Math.round(elapsed/msPerMinute) + ' mins ago';   
+  }
+
+  else if (elapsed < msPerDay ) {
+       return Math.round(elapsed/msPerHour ) + ' hours ago';   
+  }
+
+  else if (elapsed < msPerMonth) {
+      return Math.round(elapsed/msPerDay) + ' days ago';   
+  }
+
+  else if (elapsed < msPerYear) {
+      return Math.round(elapsed/msPerMonth) + ' months ago';   
+  }
+
+  else {
+      return Math.round(elapsed/msPerYear ) + ' years ago';   
+  }
+}
+
+function getPostId(element) {
+  const isRoot = element.classList.contains('post')
+  const rootElement = isRoot ? element : element.closest('.post')
+
+  const postId = rootElement.dataset.id
+
+  return postId
+}
+
