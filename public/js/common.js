@@ -58,8 +58,10 @@ twt.addEventListener('submit',async (e)=>{
 // like tweet
 const tweetContainer = document.getElementById("tweetContainer")
 tweetContainer.addEventListener('click', async(e) => {
-  if (e.target.classList.contains('fa-heart') || e.target.className === 'likeBtn'){
-    const postId = getPostId(e.target)
+  const btnLike = e.target
+
+  if (btnLike.className === 'likeBtn'){
+    const postId = getPostId(btnLike)  // find closest post id
     
     if(postId === undefined) return;
 
@@ -73,6 +75,10 @@ tweetContainer.addEventListener('click', async(e) => {
       },
       body: JSON.stringify(dataObj)
     })
+    const response = await liked.json()
+    
+    // update likes
+    btnLike.children[1].innerHTML = response.likes.length
   }
 })
 
@@ -84,6 +90,7 @@ function createHtml(data) {
   const username = data.postedBy.username
   const profilePic = data.postedBy.profilePic
   const timeAgo = timeDifference(new Date(), new Date(data.createdAt))
+  const likes = data.likes.length || ""
 
   // create a div element
   const template = document.createElement('div')
@@ -118,7 +125,7 @@ function createHtml(data) {
         </div>
         <div class='tweetBtnContainer'>
           <button class="likeBtn">
-            <i class="fa-regular fa-heart fa-lg"></i>
+            <i class="fa-regular fa-heart fa-lg"></i><span>${likes}</span>
           </button>
         </div>
       </div>
@@ -168,6 +175,7 @@ function timeDifference(current, previous) {
   }
 }
 
+// returns closest parent element with class 'post'
 function getPostId(element) {
   const isRoot = element.classList.contains('post')
   const rootElement = isRoot ? element : element.closest('.post')
