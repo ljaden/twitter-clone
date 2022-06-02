@@ -24,7 +24,9 @@ const UserSchema = new Schema({
     require: true,
   },
   profilePic: {type: String, default: '../imgs/default.png'},
-  likes: [{type: Schema.Types.ObjectId, ref: 'Post'}],
+  likes: [{type: Schema.Types.ObjectId, ref: 'Tweet'}],
+  retweets: [{type: Schema.Types.ObjectId, ref: 'Tweet'}],
+  
 },{timestamps: true})
 
 // Model constructor

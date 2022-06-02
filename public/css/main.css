@@ -4,6 +4,7 @@
   --btnHover: #d4edff;
   --border-color: #e6ecf0;
   --active-red: rgb(226,34,94);
+  --active-green: rgb(132,222,2);
 }
 
 /* GLOBALS */
@@ -178,4 +179,8 @@ h1 {
 
 .tweetBtnContainer.red button.active {
   color: var(--active-red);
+}
+
+.tweetBtnContainer.green button.active {
+  color: var(--active-green);
 }
