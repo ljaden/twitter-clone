@@ -39,15 +39,16 @@ app.use('/api/posts',postApiRoute)
 
 // database
 // import database class
-const mongoose = require('./database')
+const mongoose = require('./database');
+const { json } = require('express/lib/response');
 
 app.get('/',mw.checkLoginSession,(req,res,next) => {
   // object data - sent to template engine
   const payload = {
     pageTitle: 'Home',
-    loggedInUser: req.session.user
+    loggedInUser: req.session.user,
+    userObj: JSON.stringify(req.session.user)
   }
-  // console.log(req.session.user)
   res.render('index', {payload:payload})
 })
 

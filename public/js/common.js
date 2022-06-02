@@ -60,7 +60,7 @@ const tweetContainer = document.getElementById("tweetContainer")
 tweetContainer.addEventListener('click', async(e) => {
   const btnLike = e.target
 
-  if (btnLike.className === 'likeBtn'){
+  if (btnLike.classList.contains('likeBtn')){
     const postId = getPostId(btnLike)  // find closest post id
     
     if(postId === undefined) return;
@@ -79,18 +79,32 @@ tweetContainer.addEventListener('click', async(e) => {
     
     // update likes
     btnLike.children[1].innerHTML = response.likes.length || ""
+
+    // check if user likes post
+    if(response.likes.includes(userObj['_id'])) {
+      // add 'active' class
+      btnLike.classList.add('active') 
+    }else {
+      // remove 'active' class
+      btnLike.classList.remove('active')
+    }
   }
 })
 
 // function to create dynamic content
 function createHtml(data) {
+  // users info
   const id = data._id
   const tweet = data.content
   const name = data.postedBy.fullname
   const username = data.postedBy.username
   const profilePic = data.postedBy.profilePic
   const timeAgo = timeDifference(new Date(), new Date(data.createdAt))
+
+  // display "" if 0 likes
   const likes = data.likes.length || ""
+  // set 'active' class for tweets liked by user
+  const active = data.likes.includes(userObj._id)? 'active':''
 
   // create a div element
   const template = document.createElement('div')
@@ -118,13 +132,13 @@ function createHtml(data) {
             <i class="fa-regular fa-comment fa-lg"></i>
           </button>
         </div>
-        <div class='tweetBtnContainer'>
-          <button>
+        <div class='tweetBtnContainer green'>
+          <button class="retweet ">
             <i class="fa-solid fa-retweet fa-lg"></i>
           </button>
         </div>
-        <div class='tweetBtnContainer'>
-          <button class="likeBtn">
+        <div class='tweetBtnContainer red'>
+          <button class="likeBtn ${active}">
             <i class="fa-regular fa-heart fa-lg"></i><span>${likes}</span>
           </button>
         </div>
