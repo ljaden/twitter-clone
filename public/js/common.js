@@ -61,13 +61,15 @@ tweetContainer.addEventListener('click', async(e) => {
   const btnLike = e.target
 
   if (btnLike.classList.contains('likeBtn')){
-    const postId = getPostId(btnLike)  // find closest post id
-    
+    // find closest post id
+    const postId = getPostId(btnLike)  
+    //
     if(postId === undefined) return;
 
     const dataObj = {
       id:postId
     }
+    // PUT request -- 
     const liked = await fetch(`/api/posts/${postId}/like`,{
       method: 'PUT',
       headers:{
@@ -91,6 +93,42 @@ tweetContainer.addEventListener('click', async(e) => {
   }
 })
 
+// retweet post
+tweetContainer.addEventListener('click', async(e) => {
+  const retweetBtn = e.target
+
+  if(retweetBtn.classList.contains('retweetBtn')){
+    // get id of post
+    const postId = getPostId(retweetBtn)
+    // 
+    if(postId === undefined) return;
+
+    const dataObj = {
+      id:postId
+    }
+
+    // PUT request -- 
+    const retweeted = await fetch(`/api/posts/${postId}/retweet`,{
+      method: 'PUT',
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify(dataObj)
+    })
+    const response = await retweeted.json()
+    
+    // check if user likes post
+    if(response.retweets.includes(userObj['_id'])) {
+      // add 'active' class
+      retweetBtn.classList.add('active') 
+    }else {
+      // remove 'active' class
+      retweetBtn.classList.remove('active')
+    }
+}
+  
+})
+
 // function to create dynamic content
 function createHtml(data) {
   // users info
@@ -104,7 +142,9 @@ function createHtml(data) {
   // display "" if 0 likes
   const likes = data.likes.length || ""
   // set 'active' class for tweets liked by user
-  const active = data.likes.includes(userObj._id)? 'active':''
+  const activeLike = data.likes.includes(userObj._id)? 'active':''
+  // set 'active' class for retweets by user
+  const activeRetweet = data.retweets.includes(userObj._id)? 'active':''
 
   // create a div element
   const template = document.createElement('div')
@@ -133,12 +173,12 @@ function createHtml(data) {
           </button>
         </div>
         <div class='tweetBtnContainer green'>
-          <button class="retweet ">
+          <button class="retweetBtn ${activeRetweet}">
             <i class="fa-solid fa-retweet fa-lg"></i>
           </button>
         </div>
         <div class='tweetBtnContainer red'>
-          <button class="likeBtn ${active}">
+          <button class="likeBtn ${activeLike}">
             <i class="fa-regular fa-heart fa-lg"></i><span>${likes}</span>
           </button>
         </div>

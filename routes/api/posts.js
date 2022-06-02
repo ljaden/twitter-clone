@@ -54,7 +54,7 @@ router.post('/',async(req,res) => {
   }
 })
 
-// PUT
+// PUT -- like
 router.put('/:id/like', async(req,res) => {
   // data-id of post
   const postId = req.params.id
@@ -80,4 +80,33 @@ router.put('/:id/like', async(req,res) => {
   
   res.status(200).send(post)
 })
+
+// PUT -- retweet
+router.put('/:id/retweet',async(req,res) => {
+  // get post id
+  const postId = req.params.id
+  // get logged in users id from sessions
+  const userId = req.session.user['_id']
+  // check if user already retweeted the post
+  const hasRetweeted = req.session.user.retweets && req.session.user.retweets.includes(postId)
+  // $pull||$addToSet depending on if they retweeted already
+  const options = hasRetweeted ? '$pull':'$addToSet'
+  // add||remove tweetsID from Users retweet array
+  req.session.user = await User.findByIdAndUpdate(userId,{[options]:{retweets:postId}},{new:true})
+  .catch(error => {
+    console.log(error)
+    res.send(400)
+  })
+
+  // add||remove userId from Tweets retweet array
+  const post = await Tweet.findByIdAndUpdate(postId,{[options]:{retweets:userId}},{new:true})
+  .catch(error => {
+    console.log(error)
+    res.send(400)
+  })
+
+  res.status(200).send(post)
+})
+
+
 module.exports = router;
