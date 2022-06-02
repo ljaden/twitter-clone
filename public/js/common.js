@@ -78,7 +78,7 @@ tweetContainer.addEventListener('click', async(e) => {
     const response = await liked.json()
     
     // update likes
-    btnLike.children[1].innerHTML = response.likes.length
+    btnLike.children[1].innerHTML = response.likes.length || ""
   }
 })
 
