@@ -116,6 +116,8 @@ tweetContainer.addEventListener('click', async(e) => {
       body: JSON.stringify(dataObj)
     })
     const response = await retweeted.json()
+
+    retweetBtn.children[1].innerHTML = response.retweets.length || ""
     
     // check if user likes post
     if(response.retweets.includes(userObj['_id'])) {
@@ -125,8 +127,7 @@ tweetContainer.addEventListener('click', async(e) => {
       // remove 'active' class
       retweetBtn.classList.remove('active')
     }
-}
-  
+  }
 })
 
 // function to create dynamic content
@@ -143,6 +144,8 @@ function createHtml(data) {
   const likes = data.likes.length || ""
   // set 'active' class for tweets liked by user
   const activeLike = data.likes.includes(userObj._id)? 'active':''
+  // display "" if 0 retweets
+  const retweets = data.retweets.length || ""
   // set 'active' class for retweets by user
   const activeRetweet = data.retweets.includes(userObj._id)? 'active':''
 
@@ -175,11 +178,13 @@ function createHtml(data) {
         <div class='tweetBtnContainer green'>
           <button class="retweetBtn ${activeRetweet}">
             <i class="fa-solid fa-retweet fa-lg"></i>
+            <span>${retweets}</span>
           </button>
         </div>
         <div class='tweetBtnContainer red'>
           <button class="likeBtn ${activeLike}">
-            <i class="fa-regular fa-heart fa-lg"></i><span>${likes}</span>
+            <i class="fa-regular fa-heart fa-lg"></i>
+            <span>${likes}</span>
           </button>
         </div>
       </div>
